@@ -57,15 +57,14 @@ change the system state.
 
 ## Verifying CloudTrail
 
-I retrieved the secret in two ways: FirThe two ways to retrieve a secret in AWS Secrets Manager are:
+I retrieved the secret in two ways: The two ways to retrieve a secret in AWS Secrets Manager are:
 
 1. Using AWS Management Console:
 You manually go to Secrets Manager → select your secret → click “Retrieve secret value”. This is a visual, manual method used for testing and generates a CloudTrail event (GetSecretValue).
 
 2. Using AWS API/CLI:
-You retrieve the secret programmatically using API calls like GetSecretValue (via AWS CLI or SDK). This method is used in real applications where code securely fetches secrets automatically.st through... Second using...'
-
-To analyze my CloudTrail events, I visited...When analyzing the CloudTrail events, I discovered that every action performed in AWS is recorded with detailed information such as the event name, time, user identity, and source IP address. Specifically, I observed the GetSecretValue event when retrieving a secret from Secrets Manager, which confirmed that even read operations are logged. The logs clearly showed whether the activity was a read or write operation, along with the exact service involved. This helped me understand how CloudTrail provides complete visibility into API activities, making it useful for auditing, monitoring, and detecting suspicious behavior. I found... This tells me...'
+You retrieve the secret programmatically using API calls like GetSecretValue (via AWS CLI or SDK). This method is used in real applications where code securely fetches secrets automatically.
+To analyze my CloudTrail events, I visited...When analyzing the CloudTrail events, I discovered that every action performed in AWS is recorded with detailed information such as the event name, time, user identity, and source IP address. Specifically, I observed the GetSecretValue event when retrieving a secret from Secrets Manager, which confirmed that even read operations are logged. The logs clearly showed whether the activity was a read or write operation, along with the exact service involved. This helped me understand how CloudTrail provides complete visibility into API activities, making it useful for auditing, monitoring, and detecting suspicious behavior.
 
 ![Image](http://learn.nextwork.org/soothed_vermilion_swift_tarragon/uploads/aws-security-monitoring_s8t9u0v1)
 
@@ -109,8 +108,6 @@ AWS requires email confirmation for SNS subscriptions to ensure security and use
 During the test of my monitoring system, I triggered an event by retrieving the secret from AWS Secrets Manager. This action was successfully recorded in CloudTrail, matched by the CloudWatch metric filter, and then triggered the CloudWatch alarm. As a result, an SNS notification was sent, and I received an alert email in my inbox. This confirmed that the entire monitoring pipeline—from event logging to alert notification—was working correctly.
 
 To troubleshoot the error, I followed several steps. First, I checked the CloudFormation Events tab to identify the exact failure reason. Second, I verified that the correct AWS region (such as us-east-1) was selected. Third, I ensured that GuardDuty was enabled in the account before creating resources. Fourth, I reviewed and corrected the CloudFormation template (YAML) for any configuration issues. Finally, I confirmed that my AWS account setup and permissions were complete, as incomplete activation can prevent services from working properly.
-
-👉
 
 I did not receive an email earlier because the SNS subscription was not confirmed. In AWS SNS, email notifications are only sent after the recipient confirms the subscription through the verification link sent to their inbox. Until this confirmation is completed, messages are not delivered, which is why I did not receive any alerts initially.
 
